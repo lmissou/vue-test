@@ -1,15 +1,10 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import {
-  ElButtonGroup,
-  ElButton,
-  ElSplitter,
-  ElSplitterPanel,
-} from 'element-plus';
 import * as monaco from 'monaco-editor';
 import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
 import TsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
 import HtmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker';
+import { NButton, NButtonGroup, NSplit } from 'naive-ui';
 
 const props = withDefaults(
   defineProps<{
@@ -93,16 +88,16 @@ onMounted(() => {
 
 <template>
   <div class="flex flex-col grow">
-    <ElButtonGroup size="small" type="text" class="w-full">
-      <ElButton @click="evalScript(modelValue)">运行</ElButton>
-    </ElButtonGroup>
-    <ElSplitter>
-      <ElSplitterPanel class="flex flex-col">
-        <div ref="editorDom" class="w-full grow"></div>
-      </ElSplitterPanel>
-      <ElSplitterPanel class="flex flex-col">
+    <NButtonGroup size="small">
+      <NButton text @click="evalScript(modelValue)">运行</NButton>
+    </NButtonGroup>
+    <NSplit pane1-class="flex flex-col" pane2-class="flex flex-col">
+      <template #1>
+        <div ref="editorDom" class="grow"></div>
+      </template>
+      <template #2>
         <div ref="resultDom" class="flex flex-col grow p-[10px]" />
-      </ElSplitterPanel>
-    </ElSplitter>
+      </template>
+    </NSplit>
   </div>
 </template>

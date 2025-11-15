@@ -1,30 +1,19 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { ElAside, ElContainer, ElHeader, ElMain } from 'element-plus';
-
-const asideCollapse = ref(false);
-function handleAsideCollapse() {
-  asideCollapse.value = !asideCollapse.value;
-}
+import { NLayout, NLayoutContent, NLayoutHeader, NLayoutSider } from 'naive-ui';
 </script>
 
 <template>
-  <ElContainer>
-    <ElHeader>header</ElHeader>
-    <ElContainer class="bg-[#f3f3f3]">
-      <ElAside :width="asideCollapse ? '0' : '200px'" class="flex flex-col">
+  <NLayout content-class="flex flex-col">
+    <NLayoutHeader class="h-[40px]" bordered>header</NLayoutHeader>
+    <NLayout class="bg-[#f3f3f3]" has-sider content-class="">
+      <NLayoutSider show-trigger="arrow-circle" :collapsed-width="0">
         <slot name="aside" />
-        <div
-          class="absolute top-[50%] rounded-r-md bg-white cursor-pointer"
-          :style="{ left: asideCollapse ? '-2px' : '198px' }"
-          @click="handleAsideCollapse"
-        >
-          >
+      </NLayoutSider>
+      <NLayoutContent content-class="flex flex-col p-[10px] bg-[#f3f3f3]">
+        <div class="flex flex-col grow p-[10px] rounded-md bg-white">
+          <slot name="default" />
         </div>
-      </ElAside>
-      <ElMain class="flex! flex-col p-0! m-3 rounded-md bg-white">
-        <slot name="default" />
-      </ElMain>
-    </ElContainer>
-  </ElContainer>
+      </NLayoutContent>
+    </NLayout>
+  </NLayout>
 </template>

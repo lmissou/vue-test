@@ -1,9 +1,17 @@
 <script setup lang="ts">
+import { NMenu } from 'naive-ui';
+import { computed } from 'vue';
 import { useRouter } from 'vue-router';
-import { ElMenu, ElMenuItem } from 'element-plus';
 
 const router = useRouter();
 const routes = router.getRoutes();
+
+const menus = computed(() =>
+  routes.map((route) => ({
+    key: route.path,
+    label: route.meta?.title ?? route.path,
+  }))
+);
 
 function handleMenuSelect(path: string) {
   router.push(path);
@@ -13,9 +21,5 @@ function handleMenuSelect(path: string) {
 </script>
 
 <template>
-  <ElMenu @select="handleMenuSelect" class="grow">
-    <ElMenuItem v-for="route in routes" :key="route.path" :index="route.path">
-      {{ route.meta?.title || route.name }}
-    </ElMenuItem>
-  </ElMenu>
+  <NMenu class="grow" :options="menus" @update:value="handleMenuSelect" />
 </template>

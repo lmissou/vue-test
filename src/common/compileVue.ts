@@ -5,7 +5,6 @@ export function compile(codeStr: string, id: string = 'tmp') {
   const styleDoms: any[] = [];
   const parseResult = parse(codeStr);
   const descriptor = parseResult.descriptor;
-  console.log(parseResult);
   // 样式是否有scoped
   let scoped = false;
   // 处理新样式，添加到head

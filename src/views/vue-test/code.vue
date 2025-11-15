@@ -1,13 +1,14 @@
 <template>
   <div class="test-wrap">
-    <button type="button" @click="handleClick">
+    <NButton type="button" @click="handleClick">
       {{ val }}
-    </button>
+    </NButton>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
+import { NButton } from 'naive-ui';
 
 const val = ref(1);
 
