@@ -1,8 +1,8 @@
 <template>
   <div class="test-wrap">
-    <NButton type="button" @click="handleClick">
-      {{ val }}
-    </NButton>
+    <div>{{ val }}</div>
+    <NButton @click="handleSubClick">-</NButton>
+    <NButton @click="handleAddClick">+</NButton>
   </div>
 </template>
 
@@ -12,8 +12,11 @@ import { NButton } from 'naive-ui';
 
 const val = ref(1);
 
-function handleClick() {
+function handleAddClick() {
   val.value++;
+}
+function handleSubClick() {
+  val.value--;
 }
 </script>
 <style>
