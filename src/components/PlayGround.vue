@@ -92,7 +92,7 @@ onMounted(() => {
     <template #1>
       <div class="flex flex-col flex-1 overflow-auto">
         <div
-          class="flex flex-row justify-between items-center mb-1 mr-1 text-base"
+          class="flex flex-row justify-between items-center mb-1 mx-2.5 text-base"
         >
           <div class="flex flex-row justify-end items-center gap-1">
             <NSelect
@@ -105,19 +105,17 @@ onMounted(() => {
             />
           </div>
           <div class="flex flex-row justify-end items-center gap-1">
-            <NIcon @click="toggleDirection">
-              <Sort
-                class="transition-transform"
-                :style="{
-                  transform: `rotate(${
-                    splitDirection === 'vertical' ? 0 : 90
-                  }deg)`,
-                }"
-              />
-            </NIcon>
-            <NIcon @click="evalScript(modelValue)">
-              <VideoPlay />
-            </NIcon>
+            <NIcon
+              :component="Sort"
+              @click="toggleDirection"
+              class="transition-transform"
+              :style="{
+                transform: `rotate(${
+                  splitDirection === 'vertical' ? 0 : 90
+                }deg)`,
+              }"
+            />
+            <NIcon :component="VideoPlay" @click="evalScript(modelValue)" />
             <NDropdown
               size="small"
               trigger="click"
@@ -125,9 +123,7 @@ onMounted(() => {
               :options="moreOptions"
               @select="handleMoreOp"
             >
-              <NIcon>
-                <More />
-              </NIcon>
+              <NIcon :component="More" />
             </NDropdown>
           </div>
         </div>

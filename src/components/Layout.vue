@@ -5,10 +5,10 @@ import { NLayout, NLayoutContent, NLayoutHeader, NLayoutSider } from 'naive-ui';
 <template>
   <NLayout content-class="flex flex-col">
     <NLayoutHeader
-      class="flex flex-row justify-center items-center min-h-10"
+      class="flex flex-row items-center min-h-10 px-4"
       bordered
     >
-      header
+      代码测试
     </NLayoutHeader>
     <NLayout class="bg-[#f3f3f3]" has-sider content-class="">
       <NLayoutSider show-trigger="arrow-circle" :collapsed-width="0">
