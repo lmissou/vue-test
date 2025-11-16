@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { nextTick, onMounted, ref } from 'vue';
-import { NSplit, NButton, NButtonGroup, NSelect } from 'naive-ui';
+import { NSplit, NSelect, NIcon } from 'naive-ui';
+import { VideoPlay } from '@element-plus/icons-vue';
 import MonacoEditor from './MonacoEditor.vue';
 
 const props = withDefaults(
@@ -52,18 +53,20 @@ onMounted(() => {
 
 <template>
   <div class="flex flex-col flex-1 overflow-auto">
-    <NButtonGroup size="small" class="gap-1 mb-1">
+    <div class="flex flex-row justify-start items-center gap-1 mb-1 text-base">
       <slot name="toolbar" />
       <NSelect
         v-if="props.codeOptions.length > 0"
         v-model:value="codeSelect"
-        size="tiny"
+        size="small"
         style="width: 200px"
         :options="props.codeOptions"
         @update-value="handleCodeChange"
       />
-      <NButton text @click="evalScript(modelValue)">运行</NButton>
-    </NButtonGroup>
+      <NIcon @click="evalScript(modelValue)">
+        <VideoPlay />
+      </NIcon>
+    </div>
     <NSplit
       class="overflow-auto"
       pane1-class="flex flex-col"
