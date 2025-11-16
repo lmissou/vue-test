@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { nextTick, onMounted, ref } from 'vue';
-import { NSplit, NSelect, NIcon } from 'naive-ui';
-import { Sort, VideoPlay } from '@element-plus/icons-vue';
+import { NSplit, NSelect, NIcon, NDropdown } from 'naive-ui';
+import { More, Sort, VideoPlay } from '@element-plus/icons-vue';
 import MonacoEditor from './MonacoEditor.vue';
 import { usePlayGroundStore } from '@/store/playGround';
 import { storeToRefs } from 'pinia';
@@ -20,7 +20,17 @@ const props = withDefaults(
     codeOptions: () => [],
   }
 );
+const editorRef = ref<InstanceType<typeof MonacoEditor>>();
 const modelValue = defineModel<string>({ default: '' });
+// 代码选择
+const codeSelect = ref('');
+if (props.codeOptions.length > 0) {
+  codeSelect.value = props.codeOptions[0].value;
+  modelValue.value = props.codeOptions[0].content;
+}
+function handleCodeChange(_value: string, option: any) {
+  modelValue.value = option.content;
+}
 // 分割方向
 const { splitDirection, splitSize } = storeToRefs(usePlayGroundStore());
 const { toggleDirection } = usePlayGroundStore();
@@ -46,14 +56,24 @@ function evalScript(codeStr: string) {
   document.head.append(scriptDom);
   document.head.removeChild(scriptDom);
 }
-// 代码选择
-const codeSelect = ref('');
-if (props.codeOptions.length > 0) {
-  codeSelect.value = props.codeOptions[0].value;
-  modelValue.value = props.codeOptions[0].content;
-}
-function handleCodeChange(_value: string, option: any) {
-  modelValue.value = option.content;
+// 更多操作选项
+const moreOptions = ref([
+  {
+    label: '格式化',
+    key: 'format',
+    click() {
+      editorRef.value?.editor?.trigger(
+        'command',
+        'editor.action.formatDocument',
+        {}
+      );
+    },
+  },
+]);
+function handleMoreOp(_key: string, option: any) {
+  if (option.click) {
+    option.click();
+  }
 }
 
 onMounted(() => {
@@ -62,50 +82,66 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-col flex-1 overflow-auto">
-    <div class="flex flex-row justify-between items-center mb-1 text-base">
-      <div class="flex flex-row justify-end items-center gap-1">
-        <NSelect
-          v-if="props.codeOptions.length > 0"
-          v-model:value="codeSelect"
-          size="small"
-          style="width: 200px"
-          :options="props.codeOptions"
-          @update-value="handleCodeChange"
-        />
-      </div>
-      <div class="flex flex-row justify-end items-center gap-1">
-        <NIcon @click="toggleDirection">
-          <Sort
-            class="transition-transform"
-            :style="{
-              transform: `rotate(${splitDirection === 'vertical' ? 0 : 90}deg)`,
-            }"
-          />
-        </NIcon>
-        <NIcon @click="evalScript(modelValue)">
-          <VideoPlay />
-        </NIcon>
-      </div>
-    </div>
-    <NSplit
-      class="overflow-auto"
-      pane1-class="flex flex-col"
-      pane2-class="flex flex-col"
-      :direction="splitDirection"
-      v-model:size="splitSize"
-    >
-      <template #1>
+  <NSplit
+    class="overflow-auto"
+    pane1-class="flex flex-col"
+    pane2-class="flex flex-col"
+    :direction="splitDirection"
+    v-model:size="splitSize"
+  >
+    <template #1>
+      <div class="flex flex-col flex-1 overflow-auto">
+        <div
+          class="flex flex-row justify-between items-center mb-1 mr-1 text-base"
+        >
+          <div class="flex flex-row justify-end items-center gap-1">
+            <NSelect
+              v-if="props.codeOptions.length > 0"
+              v-model:value="codeSelect"
+              size="small"
+              style="width: 200px"
+              :options="props.codeOptions"
+              @update-value="handleCodeChange"
+            />
+          </div>
+          <div class="flex flex-row justify-end items-center gap-1">
+            <NIcon @click="toggleDirection">
+              <Sort
+                class="transition-transform"
+                :style="{
+                  transform: `rotate(${
+                    splitDirection === 'vertical' ? 0 : 90
+                  }deg)`,
+                }"
+              />
+            </NIcon>
+            <NIcon @click="evalScript(modelValue)">
+              <VideoPlay />
+            </NIcon>
+            <NDropdown
+              size="small"
+              trigger="click"
+              placement="bottom-start"
+              :options="moreOptions"
+              @select="handleMoreOp"
+            >
+              <NIcon>
+                <More />
+              </NIcon>
+            </NDropdown>
+          </div>
+        </div>
         <MonacoEditor
+          ref="editorRef"
           v-model="modelValue"
           :editorOptions="props.editorOptions"
         />
-      </template>
-      <template #2>
-        <div class="flex flex-col flex-1 overflow-auto">
-          <slot name="default" v-if="showDefSlot" />
-        </div>
-      </template>
-    </NSplit>
-  </div>
+      </div>
+    </template>
+    <template #2>
+      <div class="flex flex-col flex-1 min-w-0 min-h-0 overflow-auto">
+        <slot name="default" v-if="showDefSlot" />
+      </div>
+    </template>
+  </NSplit>
 </template>

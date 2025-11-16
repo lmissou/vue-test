@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, shallowRef, watch } from 'vue';
 import * as monaco from 'monaco-editor';
 import '@/common/initMonaco';
 
@@ -19,40 +19,44 @@ const defaultOptions = {
   language: 'javascript',
 };
 
-let editor: monaco.editor.IStandaloneCodeEditor;
+const editor = shallowRef<monaco.editor.IStandaloneCodeEditor>();
 
 const editorDom = ref<HTMLDivElement>();
 
 function initEditor() {
-  if (editor) {
+  if (editor.value) {
     return;
   }
-  editor = monaco.editor.create(
+  editor.value = monaco.editor.create(
     editorDom.value!,
     Object.assign({ ...defaultOptions }, props.editorOptions)
   );
   watch(
     () => modelValue.value,
     (val) => {
-      const editorValue = editor.getValue();
+      const editorValue = editor.value?.getValue();
       if (editorValue === val) {
         return;
       }
-      editor.setValue(modelValue.value);
+      editor.value?.setValue(modelValue.value);
     },
     {
       immediate: true,
     }
   );
-  editor.onDidChangeModelContent(() => {
-    modelValue.value = editor.getValue();
+  editor.value?.onDidChangeModelContent(() => {
+    modelValue.value = editor.value?.getValue() ?? '';
   });
 }
 onMounted(() => {
   initEditor();
 });
+
+defineExpose({
+  editor,
+});
 </script>
 
 <template>
-  <div ref="editorDom" class="flex-1"></div>
+  <div ref="editorDom" class="flex-1 min-w-0 min-h-0"></div>
 </template>
