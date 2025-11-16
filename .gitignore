@@ -9,6 +9,7 @@ lerna-debug.log*
 
 auto-imports.d.ts
 components.d.ts
+import-map-lib.json
 
 node_modules
 dist

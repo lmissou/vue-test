@@ -1,3 +1,4 @@
+import path from 'path';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import AutoImport from 'unplugin-auto-import/vite';
@@ -6,7 +7,6 @@ import { NaiveUiResolver } from 'unplugin-vue-components/resolvers';
 import tailwindcss from '@tailwindcss/vite';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import importMap from './import-map';
-import path from 'path';
 
 // https://vite.dev/config/
 export default defineConfig({

@@ -1,11 +1,15 @@
 const importMap = {
-  imports: {
-    'vue/compiler-sfc': '/lib/vue-compiler-sfc.js',
-    vue: '/lib/vue.js',
-    'naive-ui': '/lib/naive-ui.js',
-    echarts: '/lib/echarts.js',
-    '@antv/g6': '/lib/antv-g6.js',
-    '@antv/g6-v4': '/lib/antv-g6-v4.js',
-  },
+  imports: {},
 };
+
+try {
+  // @ts-ignore
+  const importMapLib = await import('./import-map-lib.json');
+  Object.assign(importMap.imports, importMapLib.imports);
+} catch (err) {
+  console.log(
+    'import-map-lib.json not found. Please run npm script "build:lib" to generage it.'
+  );
+}
+
 export default importMap;

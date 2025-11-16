@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import importMapPlugin from './build/plugins/importMapGenPlugin';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -21,4 +22,5 @@ export default defineConfig({
     },
     outDir: 'lib',
   },
+  plugins: [importMapPlugin()],
 });
