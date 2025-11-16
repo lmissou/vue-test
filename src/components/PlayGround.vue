@@ -51,7 +51,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-col grow">
+  <div class="flex flex-col flex-1 overflow-auto">
     <NButtonGroup size="small" class="gap-1 mb-1">
       <slot name="toolbar" />
       <NSelect
@@ -64,7 +64,12 @@ onMounted(() => {
       />
       <NButton text @click="evalScript(modelValue)">运行</NButton>
     </NButtonGroup>
-    <NSplit pane1-class="flex flex-col" pane2-class="flex flex-col">
+    <NSplit
+      class="overflow-auto"
+      pane1-class="flex flex-col"
+      pane2-class="flex flex-col"
+      :default-size="0.4"
+    >
       <template #1>
         <MonacoEditor
           v-model="modelValue"
@@ -72,7 +77,9 @@ onMounted(() => {
         />
       </template>
       <template #2>
-        <slot name="default" v-if="showDefSlot" />
+        <div class="flex flex-col flex-1 overflow-auto">
+          <slot name="default" v-if="showDefSlot" />
+        </div>
       </template>
     </NSplit>
   </div>

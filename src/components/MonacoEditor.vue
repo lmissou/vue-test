@@ -54,5 +54,5 @@ onMounted(() => {
 </script>
 
 <template>
-  <div ref="editorDom" class="grow"></div>
+  <div ref="editorDom" class="flex-1"></div>
 </template>

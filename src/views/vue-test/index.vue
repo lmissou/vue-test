@@ -33,7 +33,7 @@ function handleCodeStr(codeStr: string) {
     :editor-options="{ language: 'html' }"
     :before-eval-code="handleCodeStr"
   >
-    <div class="grow">
+    <div class="flex-1">
       <component is="style" v-for="styleRes in styles" v-text="styleRes.code" />
       <div id="v-root"></div>
     </div>

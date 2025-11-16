@@ -4,13 +4,20 @@ import { NLayout, NLayoutContent, NLayoutHeader, NLayoutSider } from 'naive-ui';
 
 <template>
   <NLayout content-class="flex flex-col">
-    <NLayoutHeader class="h-[40px]" bordered>header</NLayoutHeader>
+    <NLayoutHeader
+      class="flex flex-row justify-center items-center min-h-10"
+      bordered
+    >
+      header
+    </NLayoutHeader>
     <NLayout class="bg-[#f3f3f3]" has-sider content-class="">
       <NLayoutSider show-trigger="arrow-circle" :collapsed-width="0">
         <slot name="aside" />
       </NLayoutSider>
       <NLayoutContent content-class="flex flex-col p-[10px] bg-[#f3f3f3]">
-        <div class="flex flex-col grow p-[10px] rounded-md bg-white">
+        <div
+          class="flex flex-col flex-1 p-2.5 overflow-auto rounded-md bg-white"
+        >
           <slot name="default" />
         </div>
       </NLayoutContent>

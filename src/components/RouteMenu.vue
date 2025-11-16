@@ -19,5 +19,5 @@ function handleMenuSelect(path: string) {
 </script>
 
 <template>
-  <NMenu class="grow" :options="menus" @update:value="handleMenuSelect" />
+  <NMenu class="flex-1" :options="menus" @update:value="handleMenuSelect" />
 </template>

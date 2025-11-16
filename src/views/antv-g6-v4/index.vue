@@ -19,7 +19,7 @@ codeOptions.value = Object.keys(codes).map((key) => ({
 
 <template>
   <PlayGround v-model="codeContent" :code-options="codeOptions">
-    <div id="g6v4-container" class="grow"></div>
+    <div id="g6v4-container" class="flex-1"></div>
   </PlayGround>
 </template>
 
