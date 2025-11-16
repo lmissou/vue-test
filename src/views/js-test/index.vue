@@ -4,15 +4,9 @@ import initValue from './code.js?raw';
 </script>
 
 <template>
-  <PlayGround container-id="echarts-container" :init-value="initValue" />
+  <PlayGround container-id="res-container" :init-value="initValue" />
 </template>
 
 <script lang="ts">
-export const meta = { title: 'echarts测试' };
+export const meta = { title: 'js测试' };
 </script>
-
-<style scoped>
-div {
-  color: red;
-}
-</style>

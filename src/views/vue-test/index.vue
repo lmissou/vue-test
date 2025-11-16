@@ -11,7 +11,7 @@ function handleCodeStr(codeStr: string) {
   }
   const { result, destroy } = compile(codeStr, id);
   lastDestroy = destroy;
-  return mount(result, id);
+  return mount(result, '#v-root', id);
 }
 </script>
 

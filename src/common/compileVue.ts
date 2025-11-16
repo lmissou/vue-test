@@ -1,22 +1,29 @@
-import { parse, compileScript, compileStyle } from 'vue/compiler-sfc';
+import {
+  parse,
+  compileScript,
+  compileStyle,
+  compileTemplate,
+} from 'vue/compiler-sfc';
 
 // 编译vue组件
 export function compile(codeStr: string, id: string = 'tmp') {
   const styleDoms: any[] = [];
-  const parseResult = parse(codeStr);
+  const parseResult = parse(codeStr, {
+    filename: id,
+  });
   const descriptor = parseResult.descriptor;
   // 样式是否有scoped
   let scoped = false;
   // 处理新样式，添加到head
   descriptor.styles.forEach((style) => {
-    if (style.attrs.scoped) {
+    if (style.scoped) {
       scoped = true;
     }
     const styleResult = compileStyle({
       id,
       source: style.content,
-      scoped: !!style.attrs.scoped,
-      filename: '',
+      scoped: !!style.scoped,
+      filename: id,
     });
     const dom = document.createElement('style');
     dom.innerHTML = styleResult.code;
@@ -24,12 +31,28 @@ export function compile(codeStr: string, id: string = 'tmp') {
     styleDoms.push(dom);
   });
   // 编译组件代码和模板
-  const script = compileScript(descriptor, {
+  const script = compileScript(descriptor, { id });
+  const scriptResult = script.content.replace(
+    'export default ',
+    'const _sfc_main = '
+  );
+  // 编译模板
+  const template = compileTemplate({
     id,
-    inlineTemplate: true,
-    templateOptions: { id, scoped, slotted: true, filename: '' },
+    filename: id,
+    source: descriptor.template?.content ?? '',
+    scoped,
+    compilerOptions: {
+      bindingMetadata: {
+        ...script.bindings,
+        __isScriptSetup: script.setup ? true : undefined,
+      } as any,
+    },
   });
-  const result = script.content.replace('export default ', `const ${id} = `);
+  const templateResult = template.code.replace(
+    'export function render',
+    `const _sfc_render = function render`
+  );
   function destroy() {
     // 移除旧的样式
     styleDoms.forEach((dom) => {
@@ -39,16 +62,24 @@ export function compile(codeStr: string, id: string = 'tmp') {
     });
     styleDoms.splice(0);
   }
+  const result = `${scriptResult}
+${templateResult}
+
+_sfc_main.render = _sfc_render;
+_sfc_main.__scopeId = 'data-v-${id}';
+const ${id} = defineComponent(_sfc_main);
+
+`;
+  // const result = `${scriptResult}\n\n`;
   return { result, destroy };
 }
 
-export function mount(result: string, id: string = 'tmp') {
-  return `import { createApp } from 'vue';
+export function mount(result: string, containerId: string, id: string = 'tmp') {
+  return `import { createApp, defineComponent } from 'vue';
 import * as Vue from 'vue';
-window.Vue = Vue;
 
 ${result}
 
 const app = createApp(${id});
-app.mount('#v-root');`;
+app.mount('${containerId}');`;
 }

@@ -16,8 +16,6 @@ const menus = computed(() =>
 function handleMenuSelect(path: string) {
   router.push(path);
 }
-
-(window as any).router = router;
 </script>
 
 <template>
