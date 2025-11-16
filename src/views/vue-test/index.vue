@@ -19,7 +19,7 @@ codeOptions.value = Object.keys(codes).map((key) => ({
 
 const styles = ref<any>([]);
 function handleCodeStr(codeStr: string) {
-  const id = 'testComp';
+  const id = 'test';
   const result = compile(codeStr, id);
   styles.value = result.styles;
   return mount(result.jscode, '#v-root', id);
