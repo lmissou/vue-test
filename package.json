@@ -9,7 +9,10 @@
     "build:common": "pnpm -F common build",
     "dev:vue": "pnpm -F vue-test dev",
     "build:vue": "pnpm -F vue-test build",
-    "preview:vue": "pnpm -F vue-test preview"
+    "preview:vue": "pnpm -F vue-test preview",
+    "dev:react": "pnpm -F react-test dev",
+    "build:react": "pnpm -F react-test build",
+    "preview:react": "pnpm -F react-test preview"
   },
   "dependencies": {
     "@antv/g6": "^5.0.50",

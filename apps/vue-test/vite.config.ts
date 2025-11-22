@@ -22,12 +22,7 @@ export default defineConfig({
       imports: [
         'vue',
         {
-          'naive-ui': [
-            'useDialog',
-            'useMessage',
-            'useNotification',
-            'useLoadingBar',
-          ],
+          'naive-ui': ['useDialog', 'useMessage', 'useNotification', 'useLoadingBar'],
         },
       ],
     }),
@@ -49,4 +44,7 @@ export default defineConfig({
       },
     }),
   ],
+  server: {
+    port: 5171,
+  },
 });
