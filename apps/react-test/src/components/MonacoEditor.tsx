@@ -1,11 +1,16 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useImperativeHandle, useRef, type Ref } from 'react';
 import * as monaco from 'monaco-editor';
 import '@/common/initMonaco';
+
+type EditorRef = {
+  editor: monaco.editor.IStandaloneCodeEditor | null;
+};
 
 type Props = {
   value: string;
   onChange: (val: string) => void;
   editorOptions?: any;
+  ref?: Ref<EditorRef>;
 };
 
 const defaultOptions = {
@@ -26,6 +31,9 @@ function MonacoEditor(props: Props) {
       props.onChange(editor.current?.getValue() ?? '');
     });
   }
+  useImperativeHandle(props.ref, () => ({
+    editor: editor.current,
+  }));
   useEffect(() => {
     const editorValue = editor.current?.getValue();
     if (editorValue === props.value) {
@@ -35,7 +43,7 @@ function MonacoEditor(props: Props) {
   }, [props.value]);
   useEffect(() => {
     initEditor();
-  });
+  }, []);
   return <div ref={editorDom} className="flex-1 min-w-0 min-h-0"></div>;
 }
 

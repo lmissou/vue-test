@@ -1,6 +1,6 @@
-import { useEffect, useState, type PropsWithChildren } from 'react';
-import { Select, Splitter } from 'antd';
-import { PlayCircleOutlined, SwapOutlined } from '@ant-design/icons';
+import { useEffect, useRef, useState, type ComponentRef, type PropsWithChildren } from 'react';
+import { Dropdown, Select, Splitter } from 'antd';
+import { MoreOutlined, PlayCircleOutlined, SwapOutlined } from '@ant-design/icons';
 import MonacoEditor from './MonacoEditor';
 import { usePlayGroundStore } from '@/store/playGround';
 
@@ -16,6 +16,7 @@ type Props = PropsWithChildren<{
 }>;
 
 function PlayGround(props: Props) {
+  const editorRef = useRef<ComponentRef<typeof MonacoEditor>>(null);
   const splitDirection = usePlayGroundStore((state) => state.splitDirection);
   const setSplitDirection = usePlayGroundStore((state) => state.setSplitDirection);
   const splitSize = usePlayGroundStore((state) => state.splitSize);
@@ -55,6 +56,22 @@ function PlayGround(props: Props) {
     refreshDefSlot();
     props.onEval?.(props.value);
   }
+  // 更多操作下拉操作
+  const moreOpCallbackMap: { [key: string]: () => void } = {
+    format: () => editorRef.current?.editor?.trigger('command', 'editor.action.formatDocument', {}),
+  };
+  // 更多操作选项
+  const moreOptions = [
+    {
+      label: '格式化',
+      key: 'format',
+    },
+  ];
+  function handleMoreOp({ key }: { key: string }) {
+    if (moreOpCallbackMap[key]) {
+      moreOpCallbackMap[key]();
+    }
+  }
   return (
     <Splitter orientation={splitDirection} onResizeEnd={handleSplitterResize}>
       <Splitter.Panel className="flex flex-col" defaultSize={`${splitSize}%`}>
@@ -65,9 +82,12 @@ function PlayGround(props: Props) {
           <div className="flex flex-row justify-end items-center gap-1">
             <SwapOutlined onClick={toggleDirection} />
             <PlayCircleOutlined onClick={handleRun} />
+            <Dropdown arrow placement="bottomCenter" trigger={['click']} menu={{ items: moreOptions, onClick: handleMoreOp }}>
+              <MoreOutlined />
+            </Dropdown>
           </div>
         </div>
-        <MonacoEditor value={props.value} editorOptions={props.editorOptions} onChange={props.onChange} />
+        <MonacoEditor ref={editorRef} value={props.value} editorOptions={props.editorOptions} onChange={props.onChange} />
       </Splitter.Panel>
       <Splitter.Panel className="flex flex-col" defaultSize={`${100 - splitSize}%`}>
         <div className="flex flex-col flex-1 min-w-0 min-h-0 overflow-auto">{showDefSlot ? props.children : ''}</div>
