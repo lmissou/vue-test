@@ -38,3 +38,13 @@ app.mount('${containerSelector}');\n`;
     URL.revokeObjectURL(resultUrl);
   });
 }
+// 执行react组件代码（挂载）
+export function execReact(codeStr: string, containerSelector: string) {
+  let codeResult = `import ReactDOM from 'react-dom/client';
+\n${codeStr}\n
+ReactDOM.createRoot(document.querySelector('${containerSelector}')).render(React.createElement(App));`;
+  const resultUrl = getCodeBlobUrl(codeResult);
+  import(/* @vite-ignore */ resultUrl).finally(() => {
+    URL.revokeObjectURL(resultUrl);
+  });
+}
