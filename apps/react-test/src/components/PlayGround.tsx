@@ -11,7 +11,7 @@ type Props = PropsWithChildren<{
   // 代码选项列表
   codeOptions?: any[];
   // 执行代码
-  onEvel?: (code: string) => void;
+  onEval?: (code: string) => void;
 }>;
 
 function PlayGround(props: Props) {
@@ -19,9 +19,15 @@ function PlayGround(props: Props) {
   function toggleDirection() {
     setSplitDirection(splitDirection === 'vertical' ? 'horizontal' : 'vertical');
   }
+  const [showDefSlot, setShowDefSlot] = useState(true);
+  function refreshDefSlot() {
+    setShowDefSlot(false);
+    setTimeout(() => {
+      setShowDefSlot(true);
+    });
+  }
   const [codeSelect, setCodeSelect] = useState('');
   useEffect(() => {
-    console.log(codeSelect)
     if (props.codeOptions?.length! > 0) {
       setCodeSelect(props.codeOptions?.[0].value);
       props.onChange?.(props.codeOptions?.[0].content);
@@ -32,7 +38,8 @@ function PlayGround(props: Props) {
     props.onChange?.(option.content);
   }
   function handleRun() {
-    props.onEvel?.(props.value);
+    refreshDefSlot();
+    props.onEval?.(props.value);
   }
   return (
     <Splitter orientation={splitDirection}>
@@ -46,10 +53,10 @@ function PlayGround(props: Props) {
             <PlayCircleOutlined onClick={handleRun} />
           </div>
         </div>
-        <MonacoEditor value={props.value} onChange={props.onChange} />
+        <MonacoEditor value={props.value} editorOptions={props.editorOptions} onChange={props.onChange} />
       </Splitter.Panel>
       <Splitter.Panel className="flex flex-col">
-        <div className="flex flex-col flex-1 min-w-0 min-h-0 overflow-auto">{props.children}</div>
+        <div className="flex flex-col flex-1 min-w-0 min-h-0 overflow-auto">{showDefSlot ? props.children : ''}</div>
       </Splitter.Panel>
     </Splitter>
   );

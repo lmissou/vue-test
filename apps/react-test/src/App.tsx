@@ -7,6 +7,11 @@ const theme: ThemeConfig = {
     colorPrimary: '#409EFF',
     colorBgBase: '#FFFFFF',
   },
+  components: {
+    Layout: {
+      headerHeight: 40,
+    },
+  },
 };
 
 function App() {

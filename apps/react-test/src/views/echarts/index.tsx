@@ -8,7 +8,7 @@ const codes = import.meta.glob<string>('./codes/**/*.js', {
   import: 'default',
 });
 
-function JsTest() {
+function EchartsTest() {
   const [codeContent, setCodeContent] = useState('');
   const [codeOptions] = useState<any[]>(() =>
     Object.keys(codes).map((key) => ({
@@ -22,12 +22,12 @@ function JsTest() {
   }
   return (
     <PlayGround value={codeContent} codeOptions={codeOptions} onChange={setCodeContent} onEval={handleEval}>
-      <div id="jslog-container" className="flex-1"></div>
+      <div id="echarts-container" className="flex-1"></div>
     </PlayGround>
   );
 }
 
-export default JsTest;
+export default EchartsTest;
 export const meta = {
-  title: 'js测试',
+  title: 'echarts测试',
 };

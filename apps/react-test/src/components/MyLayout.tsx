@@ -8,7 +8,7 @@ type MyLayoutProps = PropsWithChildren;
 function MyLayout(props: MyLayoutProps) {
   return (
     <Layout>
-      <Header className="bg-white!">Header</Header>
+      <Header className="bg-white! border-b border-gray-200">Header</Header>
       <Layout>
         <Sider className="bg-white!">Sider</Sider>
         <Content className="flex flex-col">
