@@ -40,6 +40,7 @@ function PlayGround(props: Props) {
     if (props.codeOptions?.length! > 0) {
       setCodeSelect(props.codeOptions?.[0].value);
       props.onChange?.(props.codeOptions?.[0].content);
+      props.onEval?.(props.codeOptions?.[0].content);
     }
   }, []);
   function handleCodeChange(value: string, option: any) {
