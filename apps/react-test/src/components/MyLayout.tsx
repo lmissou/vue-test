@@ -35,10 +35,10 @@ function MyLayout(props: MyLayoutProps) {
           onCollapse={setSiderCollapsed}
           zeroWidthTriggerStyle={{
             top: '50%',
-            right: '-0.6em',
-            width: '1.5em',
-            height: '1.5em',
-            fontSize: '16px',
+            right: '-0.8em',
+            width: '1.7em',
+            height: '1.7em',
+            fontSize: '14px',
             color: 'black',
             backgroundColor: 'white',
             boxShadow: '0 2px 4px 0px rgba(0, 0, 0, .06)',
