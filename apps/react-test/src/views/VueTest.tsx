@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { compileVue, execVue } from '@web-test/common';
+import { compileVue, execVue, getCodeOptions } from '@web-test/common';
 import PlayGround from '@/components/PlayGround';
 
 const codes = import.meta.glob<string>('#/codes/vue/**/*.vue', {
@@ -10,13 +10,7 @@ const codes = import.meta.glob<string>('#/codes/vue/**/*.vue', {
 
 function VueTest() {
   const [codeContent, setCodeContent] = useState('');
-  const [codeOptions] = useState<any[]>(() =>
-    Object.keys(codes).map((key) => ({
-      value: key,
-      label: key,
-      content: codes[key],
-    }))
-  );
+  const [codeOptions] = useState<any[]>(() => getCodeOptions(codes));
   const [styles, setStyles] = useState<any[]>([]);
   function handleEval(code: string) {
     const id = 'test';

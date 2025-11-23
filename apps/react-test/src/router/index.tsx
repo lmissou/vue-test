@@ -36,7 +36,7 @@ Object.keys(views).forEach((key) => {
   });
 });
 
-const router = createHashRouter(routes);
+export const router = createHashRouter(routes);
 
 function AppRouter() {
   return <RouterProvider router={router} />;

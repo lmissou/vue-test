@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { exec } from '@web-test/common';
+import { exec, getCodeOptions } from '@web-test/common';
 import PlayGround from '@/components/PlayGround';
 
 const codes = import.meta.glob<string>('#/codes/g6/**/*.js', {
@@ -10,13 +10,7 @@ const codes = import.meta.glob<string>('#/codes/g6/**/*.js', {
 
 function G6Test() {
   const [codeContent, setCodeContent] = useState('');
-  const [codeOptions] = useState<any[]>(() =>
-    Object.keys(codes).map((key) => ({
-      value: key,
-      label: key,
-      content: codes[key],
-    }))
-  );
+  const [codeOptions] = useState<any[]>(() => getCodeOptions(codes));
   function handleEval(code: string) {
     exec(code);
   }
@@ -29,5 +23,5 @@ function G6Test() {
 
 export default G6Test;
 export const meta = {
-  title: 'echarts测试',
+  title: 'g6测试',
 };

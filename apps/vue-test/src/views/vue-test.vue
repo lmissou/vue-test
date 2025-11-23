@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { compileVue, execVue } from '@web-test/common';
+import { compileVue, execVue, getCodeOptions } from '@web-test/common';
 import PlayGround from '@/components/PlayGround.vue';
 
 const codeContent = ref('');
@@ -11,11 +11,7 @@ const codes = import.meta.glob<string>('#/codes/vue/**/*.vue', {
   query: 'raw',
   import: 'default',
 });
-codeOptions.value = Object.keys(codes).map((key) => ({
-  value: key,
-  label: key,
-  content: codes[key],
-}));
+codeOptions.value = getCodeOptions(codes);
 
 const styles = ref<any>([]);
 function handleEval(codeStr: string) {
