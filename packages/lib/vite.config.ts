@@ -6,6 +6,7 @@ const nodeModulesEntry = [
   'naive-ui',
   '@element-plus/icons-vue',
   'react',
+  'react-dom/client',
   'antd',
   '@ant-design/icons',
   'echarts',
@@ -26,7 +27,6 @@ export default defineConfig({
     lib: {
       entry: {
         ...nodeModulesEntry,
-        'react-dom/client': './node_modules/react-dom/client.js',
       },
       formats: ['es'],
       fileName(_format, entryName) {
