@@ -78,7 +78,7 @@ onMounted(() => {
   <NSplit class="overflow-auto" pane1-class="flex flex-col" pane2-class="flex flex-col" :direction="splitDirection" v-model:size="splitSize">
     <template #1>
       <div class="flex flex-col flex-1 overflow-auto">
-        <div class="flex flex-row justify-between items-center mb-1 mx-2.5 text-base">
+        <div class="flex flex-row justify-between items-center mb-1 m-2.5 text-base">
           <div class="flex flex-row justify-end items-center gap-1">
             <NSelect
               v-if="props.codeOptions.length > 0"
